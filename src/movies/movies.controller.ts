@@ -8,39 +8,35 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { Movie } from './entities/movie.entity';
+import { MoviesService } from './movies.service';
 
 @Controller('movies') // 입력된 값이 특별하게 취급되어, 컨트롤러를 위한 url을 만듬, 즉 Entry Point를 컨트롤 함
 export class MoviesController {
+  constructor(private readonly moviesService: MoviesService) {}
+
   @Get()
-  getAll() {
-    return 'This will return movies';
+  getAll(): Movie[] {
+    return this.moviesService.getAll();
   }
 
   @Get('/:id')
-  getMovie(@Param('id') id: string) {
-    return `Return one movie with the id: ${id}`;
+  getMovie(@Param('id') id: string): Movie {
+    return this.moviesService.getOne(id); //`Return one movie with the id: ${id}`;
   }
 
   @Post()
-  createMovie() {
-    return 'This will create a movie';
+  createMovie(@Body() movieData) {
+    return this.moviesService.createMovie(movieData);
   }
 
   @Delete('/:id')
   deleteMovie(@Param('id') movieId: string) {
-    return `Delete Movie with id: ${movieId}`;
+    return this.moviesService.deleteMovie(movieId);
   }
 
   @Patch('/:id')
   pathMovie(@Param('id') movieId: string, @Body() updateData) {
-    return {
-      updateDataMovie: movieId,
-      ...updateData,
-    };
-  }
-
-  @Get('search')
-  search(@Query('year') year: string) {
-    return `We are searching for a movie after: ${year}`;
+    return this.moviesService.updateMovie(movieId, updateData);
   }
 }
