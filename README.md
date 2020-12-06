@@ -306,6 +306,8 @@ getAll(@Req() req, @Res() res): Movie[] {}
 - unit testing은 모든 function을 따로 따로 테스트하는 것을 의미
 - end-to-end (e2e) 라는 테스트도 있는데, 이것은 모든 시스템을 테스팅 하는 것
 
+* 주의: e2e 테스트, unit 테스트를 진행시 실제 application의 환경을 그대로 적용시켜줘야 된다.
+
 package.json 파일에 5가지 테스트 관련 스트립트가 있음
 
 - test: "jest"
@@ -321,7 +323,7 @@ package.json 파일에 5가지 테스트 관련 스트립트가 있음
 - nestJS에서는 jest가 .spec.ts 파일들을 찾아 볼 수 있도록 설정 되어 있음
 - jest 참고 문서 링크: https://jestjs.io/docs/en/api#reference
 
-**unit Test**
+**Unit Test**
 
 ```
 describe(); //테스트 묘사
@@ -341,4 +343,24 @@ beforeAll(); // DB를 정리하고 테스트 데이터를 추가해줄수 있음
 
 ...
 
+```
+
+**e2e Test**
+
+- test 폴더의 app.e2e-spec.ts에서 테스트 진행
+- unit test와 다른 점은 supertest 라는 lib을 활용해 http request를 전달 할 수 있음
+
+```
+//ex)
+it('/ (GET)', () => {
+  return request(app.getHttpServer())
+    .get('/')
+    .expect(200)
+    .expect('Welcome to Movie API');
+});
+
+// it.todo() 활용 작성하고 싶은 내용 입력해 줄 수 있음
+it.todo("GET");
+it.todo("PATCH");
+it.todo("DELETE");
 ```
