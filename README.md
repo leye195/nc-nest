@@ -69,7 +69,8 @@ export class AppController {
 ## Rest API 만들기
 
 ```
-nest g co  // controller 생성해줌
+// controller 생성해줌
+nest g co
 or
 nest generate co
 ```
@@ -118,11 +119,15 @@ Single-responsibility principle<br/>
 **Services: 로직을 관리하는 역할**
 
 ```
+// service 생성
 nest g service (s)
 
 or
 
 nest generate service (s)
+```
+
+```
 
 /* service의 이름을 입력
 ex) movies, 아래와 같은 두 파일이 생성 됨
@@ -255,8 +260,11 @@ bootstrap();
 - NestJS에서 앱은 여러개의 모듈로 구성되기 때문에 분리된 모듈들을 app.module을 통해 import 해주자
 
 ```
+// module 생성
 nest g(generate) mo (module)
+```
 
+```
 //app.module의 imports에 생성된 module이 추가됨
 //생성한 movies.module.ts에 controllers와 providers를 추가해줌
 
@@ -291,4 +299,46 @@ export class MovieModule {}
 // ex)
 @Get()
 getAll(@Req() req, @Res() res): Movie[] {}
+```
+
+## Testing
+
+- unit testing은 모든 function을 따로 따로 테스트하는 것을 의미
+- end-to-end (e2e) 라는 테스트도 있는데, 이것은 모든 시스템을 테스팅 하는 것
+
+package.json 파일에 5가지 테스트 관련 스트립트가 있음
+
+- test: "jest"
+- test:watch : "jest --watch"
+- test:cov : "jest --coverage"
+- test:debug : "node --inspect-brk -r tsconfig-paths/register -r ts-node/reg
+- test:e2e : "jest --config ./test/jest-e2e.json"
+
+### jest
+
+- jest는 javascript를 아주 쉽게 테스팅하게 도와주는 패키지 (TS, Node, React 등등에서 모두 테스트 가능)
+- nestJS에서 `.spec.ts` 가 붙은 파일들은 테스트를 포함하는 파일이다
+- nestJS에서는 jest가 .spec.ts 파일들을 찾아 볼 수 있도록 설정 되어 있음
+- jest 참고 문서 링크: https://jestjs.io/docs/en/api#reference
+
+**unit Test**
+
+```
+describe(); //테스트 묘사
+
+beforeEach(); // 각 테스트가 진행되기 전에 실행
+
+it(name,callback); // individual test (개별 테스트)
+
+expect(expression); //결과 예측하는데 활용
+ex) expect(received).toEqual(expected)
+expect(2 + 2).toEqual(4);
+
+afterAll(); // // 모든 테스트가 완료 된 후 실행됨, 안에 DB를 깨끗하게 정리해주는 function을 넣을 수 있음
+
+afterEach(); // 각 하나의 테스트가 완료 된 후 실행됨
+beforeAll(); // DB를 정리하고 테스트 데이터를 추가해줄수 있음
+
+...
+
 ```
